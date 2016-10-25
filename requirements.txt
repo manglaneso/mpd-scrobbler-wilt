@@ -1,0 +1,2 @@
+python_mpd2==0.5.5
+requests==2.11.1
