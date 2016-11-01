@@ -17,6 +17,9 @@ class Wilt:
     def __init__(self):
         self.user = input('Username: ')
         self.password = input('Password: ')
+        self.mpd_location = input('mpd IP: ')
+        self.mpd_port = input('mpd port: ')
+        #self.mpd_pass = input('mpd pass: ') # Uncomment if you have a password protecting mpd 
         self.logged_in = False
         self.header = {'Authorization': 'Token {}'.format(self.login())}
         self.last_played = ''  # Clarity
@@ -44,17 +47,17 @@ Wilt = Wilt()
 def query_mpd():
     try:
         client = mpd.MPDClient(use_unicode=True)
-        client.connect("localhost", 6600) # Change for the IP you run mpd on
-        # client.password("MPD_PASSWORD") # Set if you have a password protecting mpd 
+        client.connect(Wilt.mpd_location, Wilt.mpd_port) # Change for the IP you run mpd on
+        #client.password(Wilt.mpd_pass) # Set if you have a password protecting mpd 
         currsong = client.currentsong()
         song = currsong['title']
         artist = currsong['artist']
         #album = currsong['album']
         Wilt.scrobble({'song': song, 'artist': artist})
-    except:
-        print('Non fatal exception. Query failed.')
+    except Exception as detail:
+        print('Non fatal exception. Query failed:', detail)
 
 if __name__ == '__main__':
     while 1:
         query_mpd()
-        sleep(25)
+sleep(25)
